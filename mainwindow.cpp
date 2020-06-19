@@ -2,8 +2,8 @@
 #include <QDebug>
 #include <QTimer>
 #include <QGamepadManager>
-
 #include <algorithm>
+
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -78,6 +78,16 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             case Qt::Key_F2: ui->b_keyboardAction_2->setDown(true), on_b_keyboardAction_2_pressed(); break;
             case Qt::Key_F3: ui->b_keyboardAction_3->setDown(true), on_b_keyboardAction_3_pressed(); break;
             case Qt::Key_F4: ui->b_keyboardAction_4->setDown(true), on_b_keyboardAction_4_pressed(); break;
+        }
+        switch(socketHandler->getSocketState())
+        {
+            case QAbstractSocket::SocketState::BoundState: logger->write(Logger::Level::WARNING, "Bound"); break;
+            case QAbstractSocket::SocketState::ClosingState: logger->write(Logger::Level::WARNING, "Closing"); break;
+            case QAbstractSocket::SocketState::ConnectedState: logger->write(Logger::Level::WARNING, "Connected"); break;
+            case QAbstractSocket::SocketState::ListeningState: logger->write(Logger::Level::WARNING, "Listening"); break;
+            case QAbstractSocket::SocketState::ConnectingState: logger->write(Logger::Level::WARNING, "Bound"); break;
+            case QAbstractSocket::SocketState::HostLookupState: logger->write(Logger::Level::WARNING, "HostLookup"); break;
+            case QAbstractSocket::SocketState::UnconnectedState: logger->write(Logger::Level::WARNING, "Unconnected"); break;
         }
     }
 }
@@ -180,6 +190,7 @@ void MainWindow::on_s_joystickThrottle_sliderMoved(int position) { ui->l_joystic
 //Joystick others
 void MainWindow::sendJoystickData()
 {
+
     float *jwheelSpeeds = kinematicsHandler->calculateAllWheelSpeeds(
                                                std::clamp(jy, MovementConstants::MinSpeed, MovementConstants::MaxSpeed),
                                                std::clamp(jx, MovementConstants::MinSpeed, MovementConstants::MaxSpeed),

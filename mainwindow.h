@@ -30,7 +30,9 @@ private slots:
     void on_s_joystickThrottle_sliderMoved(int position);
 
     void on_s_leftJoystickX_Throttle_sliderMoved(int position);
+    void on_s_leftJoystickX_Throttle_sliderMovedf(float position);
     void on_s_leftJoystickY_Throttle_sliderMoved(int position);
+
     //void on_s_leftTrigger_Throttle_sliderMoved(int position);
 
     void on_s_rightJoystickX_Throttle_sliderMoved(int position);
