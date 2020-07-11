@@ -138,10 +138,6 @@ void MainWindow::on_s_keyboardThrottle_sliderMoved(int position) { ui->l_keyboar
 //Keyboard others
 void MainWindow::sendKeyboardData()
 {
-//    float *kwheelSpeeds = kinematicsHandler->calculateAllWheelSpeeds(
-//                                               /*std::clamp(*/kup+kdown, /*MovementConstants::MinSpeed, MovementConstants::MaxSpeed),*/
-//                                               /*std::clamp(*/kleft+kright, /*MovementConstants::MinSpeed, MovementConstants::MaxSpeed),*/
-//                                               /*std::clamp(*/kturnLeft+kturnRight/*, MovementConstants::MinSpeed, MovementConstants::MaxSpeed)*/);
     float clampedky = std::clamp(kup+kdown, MovementConstants::MinSpeed, MovementConstants::MaxSpeed);
     float clampedkx = std::clamp(kleft+kright, MovementConstants::MinSpeed, MovementConstants::MaxSpeed);
     float kmagnitude = kinematicsHandler->calculateWheelMagnitude(clampedky, clampedkx);
@@ -180,14 +176,15 @@ void MainWindow::on_s_joystickThrottle_sliderMoved(int position) { ui->l_joystic
 //Joystick others
 void MainWindow::sendJoystickData()
 {
-    float *jwheelSpeeds = kinematicsHandler->calculateAllWheelSpeeds(
-                                               std::clamp(jy, MovementConstants::MinSpeed, MovementConstants::MaxSpeed),
-                                               std::clamp(jx, MovementConstants::MinSpeed, MovementConstants::MaxSpeed),
-                                               std::clamp(jz, MovementConstants::MinSpeed, MovementConstants::MaxSpeed));
-    if (!(socketHandler->sendMovementData(QString::number(jwheelSpeeds[0], 'f', 4) + ',' +
-                                          QString::number(jwheelSpeeds[1], 'f', 4) + ',' +
-                                          QString::number(jwheelSpeeds[2], 'f', 4) + ',' +
-                                          QString::number(jwheelSpeeds[3], 'f', 4))))
+    float clampedjy = std::clamp(jy, MovementConstants::MinSpeed, MovementConstants::MaxSpeed);
+    float clampedjx = std::clamp(jx, MovementConstants::MinSpeed, MovementConstants::MaxSpeed);
+    float jmagnitude = kinematicsHandler->calculateWheelMagnitude(clampedjy, clampedjx);
+    float jdirection = kinematicsHandler->calculateWheelDirection(clampedjy, clampedjx);
+
+    if (!(socketHandler->sendMovementData(QString::number(kinematicsHandler->calculateFLWheelSpeed(jdirection, jmagnitude), 'f', 4) + ',' +
+                                          QString::number(kinematicsHandler->calculateFRWheelSpeed(jdirection, jmagnitude), 'f', 4) + ',' +
+                                          QString::number(kinematicsHandler->calculateBLWheelSpeed(jdirection, jmagnitude), 'f', 4) + ',' +
+                                          QString::number(kinematicsHandler->calculateBRWheelSpeed(jdirection, jmagnitude), 'f', 4))))
     {
         logger->write(Logger::Level::WARNING, "Could not send data");
     }

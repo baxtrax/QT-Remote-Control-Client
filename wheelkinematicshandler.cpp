@@ -43,19 +43,3 @@ float WheelKinematicsHandler::calculateBRWheelSpeed(float direction, float magni
 {
     return (std::clamp((((float) sin(direction + (1.0/4.0 * PI))) * magnitude), MovementConstants::MinSpeed, MovementConstants::MaxSpeed));
 }
-
-float *WheelKinematicsHandler::calculateAllWheelSpeeds(float y, float x, float z)
-{
-    float direction = calculateWheelDirection(y, x);
-    float magnitude = calculateWheelMagnitude(y, x);
-    return calculateAllWheelSpeeds(direction, magnitude);
-}
-
-float *WheelKinematicsHandler::calculateAllWheelSpeeds(float direction, float magnitude)
-{
-    static float allSpeeds[4] = {calculateFLWheelSpeed(direction, magnitude),
-                                 calculateFRWheelSpeed(direction, magnitude),
-                                 calculateBLWheelSpeed(direction, magnitude),
-                                 calculateBRWheelSpeed(direction, magnitude)};
-    return allSpeeds;
-}
