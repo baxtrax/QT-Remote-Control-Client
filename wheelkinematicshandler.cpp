@@ -24,22 +24,22 @@ float WheelKinematicsHandler::calculateWheelMagnitude(float y, float x)
     return (std::clamp(((float)sqrt(pow(y, 2) + pow(x, 2))), MovementConstants::MinSpeed, MovementConstants::MaxSpeed));
 }
 
-float WheelKinematicsHandler::calculateFLWheelSpeed(float direction, float magnitude)
+float WheelKinematicsHandler::calculateFLWheelSpeed(float direction, float magnitude, float z)
 {
-    return (std::clamp((((float) sin(direction + (1.0/4.0 * PI))) * magnitude), MovementConstants::MinSpeed, MovementConstants::MaxSpeed));
+    return ((((float) -sin(direction + (1.0/4.0 * PI))) * magnitude) + z);
 }
 
-float WheelKinematicsHandler::calculateFRWheelSpeed(float direction, float magnitude)
+float WheelKinematicsHandler::calculateFRWheelSpeed(float direction, float magnitude, float z)
 {
-    return (std::clamp((((float) sin(direction - (1.0/4.0 * PI))) * magnitude), MovementConstants::MinSpeed, MovementConstants::MaxSpeed));
+    return ((((float) sin(direction - (1.0/4.0 * PI))) * magnitude) + z);
 }
 
-float WheelKinematicsHandler::calculateBLWheelSpeed(float direction, float magnitude)
+float WheelKinematicsHandler::calculateBLWheelSpeed(float direction, float magnitude, float z)
 {
-    return (std::clamp((((float) sin(direction - (1.0/4.0 * PI))) * magnitude), MovementConstants::MinSpeed, MovementConstants::MaxSpeed));
+    return ((((float) -sin(direction - (1.0/4.0 * PI))) * magnitude) + z);
 }
 
-float WheelKinematicsHandler::calculateBRWheelSpeed(float direction, float magnitude)
+float WheelKinematicsHandler::calculateBRWheelSpeed(float direction, float magnitude, float z)
 {
-    return (std::clamp((((float) sin(direction + (1.0/4.0 * PI))) * magnitude), MovementConstants::MinSpeed, MovementConstants::MaxSpeed));
+    return ((((float) sin(direction + (1.0/4.0 * PI))) * magnitude) + z);
 }
